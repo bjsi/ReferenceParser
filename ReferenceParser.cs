@@ -76,6 +76,11 @@ namespace ReferenceParser
 
         }
 
+        /// <summary>
+        /// Get the html string containing element references.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <returns>References html string or null</returns>
         private static string GetReferencesHtml(HtmlDocument doc)
         {
 
@@ -87,21 +92,33 @@ namespace ReferenceParser
 
         }
 
-        private static string GetReference(string refs, string reference)
+        /// <summary>
+        /// Get the reference from the referenceHtml.
+        /// </summary>
+        /// <param name="referenceHtml"></param>
+        /// <param name="refName"></param>
+        /// <returns>Reference string or null</returns>
+        private static string GetReference(string referenceHtml, string refName)
         {
 
-            string pattern = String.Format(@"(#{0}: )(.*?)(<br>)", reference);
+            string pattern = String.Format(@"#{0}: (.*?)<br>", refName);
             Regex regex = new Regex(pattern);
-            Match match = regex.Match(refs);
+            Match match = regex.Match(referenceHtml);
+
             if (match.Success)
             {
-                string comment = match.Groups[2].Value;
+
+                string reference = match.Groups[1].Value;
+
                 // Remove any html within the reference 
                 var doc = new HtmlDocument();
-                doc.LoadHtml(comment);
+                doc.LoadHtml(reference);
                 return doc.DocumentNode.InnerText?.Trim();
+
             }
+
             return null;
+
         }
     }
 }
