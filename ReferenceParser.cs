@@ -101,6 +101,9 @@ namespace ReferenceParser
         private static string GetReference(string referenceHtml, string refName)
         {
 
+            if (string.IsNullOrEmpty(referenceHtml))
+                return string.Empty;
+
             string pattern = String.Format(@"#{0}: (.*?)<br>", refName);
             Regex regex = new Regex(pattern);
             Match match = regex.Match(referenceHtml);
@@ -117,7 +120,7 @@ namespace ReferenceParser
 
             }
 
-            return null;
+            return string.Empty;
 
         }
     }
